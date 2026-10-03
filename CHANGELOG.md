@@ -1,5 +1,10 @@
 # 更新履歴 / Changelog
 
+## 0.2.0 — 2026-10-04
+
+- 動画の発見・競合比較・チャンネル分析から企画の根拠まで調べる`youtube-research`を同梱。 / Bundle `youtube-research` for video discovery, competitor comparisons, channel analysis, and evidence-based content ideas.
+- アプリとCLIで共通の導入手順にまとめ、自然文で分析を始める質問例を追加。 / Unify app and CLI setup instructions and add natural-language research examples.
+
 ## 0.1.1 — 2026-10-03
 
 - CodexとClaude Codeの版を揃え、導入・認証・更新の案内を日本語と英語で整備。 / Align client versions and provide Japanese and English installation, authentication, and update guidance.

@@ -1,7 +1,7 @@
 {
   "name": "bazutte",
-  "version": "0.1.1",
-  "description": "Bazutte MCPに接続 / Connect to Bazutte MCP",
+  "version": "0.2.0",
+  "description": "BazutteでYouTubeを調査・分析 / Research and analyze YouTube with Bazutte",
   "author": {
     "name": "Bazutte"
   },

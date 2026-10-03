@@ -7,7 +7,7 @@
     {
       "name": "bazutte",
       "source": "./plugins/bazutte",
-      "description": "Bazutte MCPに接続 / Connect to Bazutte MCP",
+      "description": "BazutteでYouTubeを調査・分析 / Research and analyze YouTube with Bazutte",
       "homepage": "https://github.com/bazutte/bazutte-plugins"
     }
   ],
