@@ -1,0 +1,20 @@
+{
+  "name": "bazutte-plugins",
+  "interface": {
+    "displayName": "Bazutte Plugins"
+  },
+  "plugins": [
+    {
+      "name": "bazutte",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bazutte"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

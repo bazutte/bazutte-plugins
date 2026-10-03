@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "bazutte": {
+      "type": "http",
+      "url": "https://bazutte.com/mcp"
+    }
+  }
+}

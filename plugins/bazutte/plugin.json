@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "bazutte",
+  "version": "0.1.1",
+  "description": "Bazutte MCPに接続 / Connect to Bazutte MCP",
+  "author": {
+    "name": "Bazutte"
+  },
+  "homepage": "https://bazutte.com",
+  "repository": "https://github.com/bazutte/bazutte-plugins"
+}

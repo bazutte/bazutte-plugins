@@ -1,0 +1,15 @@
+{
+  "name": "bazutte-plugins",
+  "owner": {
+    "name": "Bazutte"
+  },
+  "plugins": [
+    {
+      "name": "bazutte",
+      "source": "./plugins/bazutte",
+      "description": "Bazutte MCPに接続 / Connect to Bazutte MCP",
+      "homepage": "https://github.com/bazutte/bazutte-plugins"
+    }
+  ],
+  "description": "Claude Code・Codex向けBazutte MCPプラグイン / Bazutte MCP plugins for Claude Code and Codex"
+}
