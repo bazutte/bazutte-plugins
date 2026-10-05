@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "bazutte",
-  "version": "0.2.0",
-  "description": "BazutteでYouTubeを調査・分析 / Research and analyze YouTube with Bazutte",
+  "version": "0.4.0",
+  "description": "Bazutteの保存データでYouTubeの動画・チャンネルを調査 / Research YouTube videos and channels using Bazutte's stored data",
   "author": {
     "name": "Bazutte"
   },

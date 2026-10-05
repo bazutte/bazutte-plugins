@@ -2,7 +2,9 @@
 
 [日本語](README.md) | [English](README.en.md)
 
-Research YouTube videos and channels with [Bazutte](https://bazutte.com) from Claude, Claude Code, and Codex. The plugin bundles the MCP connection with a research skill for video discovery, competitor comparisons, and channel analysis.
+Research YouTube videos and channels using [Bazutte](https://bazutte.com)'s stored data from Claude, Claude Code, and Codex. This plugin is provided by Bazutte and bundles the MCP connection with a research skill for video discovery, competitor comparisons, and channel analysis.
+
+Data sources include YouTube API Services. The MCP returns stored information and Bazutte's own metrics in Bazutte's format. This is not an official YouTube plugin or a general-purpose client for calling the YouTube Data API directly. YouTube is a trademark of Google LLC.
 
 ## Requirements
 
@@ -63,13 +65,33 @@ Use Bazutte to find growing videos from channels with no more than 3,000 subscri
 Use Bazutte to compare this YouTube channel with its competitors by views gained and posts published in the last 30 days.
 ```
 
-The bundled `youtube-research` skill selects data and comparison metrics that match your question, then presents results with video and channel links. If you ask for content ideas, it separates observed patterns from hypotheses. Analysis uses Bazutte's stored data.
+```text
+Use Bazutte to find the 100 most viewed videos published yesterday from channels with no more than 3,000 subscribers. Show thumbnails, spreading rate, and hit score, and save every returned field in a report.
+```
 
-Ask in plain language. You can also invoke `/bazutte:youtube-research` in Claude Code or `$youtube-research` in Codex.
+The bundled `bazutte-research` skill selects data and comparison metrics that match your question, then presents results with source attribution and YouTube video and channel links. If you ask for content ideas, it separates observed patterns from hypotheses. Data update times and retrieval times are distinguished; real-time values are not guaranteed.
+
+Ask in plain language. You can also invoke `/bazutte:bazutte-research` in Claude Code or `$bazutte-research` in Codex.
+
+## Available research and reports
+
+You can research video rankings, channel comparisons and details, past uploads, video metric history, keyword rankings, channel name changes, and stored ban and reinstatement history. Ask "What can Bazutte do?" for examples based on the connected tools' descriptions. Date ranges, limits, and permissions vary by tool.
+
+When you ask to save every field, the skill avoids selecting a subset of columns and preserves the returned rows, fields, conditions, and warnings. It retrieves and saves the server's HTML report when supported, or builds a report from the retrieved data otherwise. Server reports are temporary; resource reading and file saving also depend on your AI client. "Every field" refers to the retrieved data, not every record stored in Bazutte.
+
+Returned thumbnails use external image URLs and retain links to the original videos. Image links are provided when images cannot be displayed. Spreading rate, buzz score, and hit score are Bazutte's own multiplier metrics, not official YouTube metrics or ratings. A hit score of `1.0` can also be a fallback when the score cannot be calculated.
+
+Reports are snapshots of retrieved information. Saving, embedding offline images, and redistributing data are subject to applicable terms and refresh or deletion requirements. Saving a report does not grant indefinite retention or redistribution rights. A server report's expiry is the deadline for accessing that temporary resource, not a data license expiry.
 
 ## Authentication and privacy
 
 Each user signs in to Bazutte and grants access through OAuth. No shared API key, access token, personal information, or account data is included in the package. Publishing the connection definition does not grant access to Bazutte data.
+
+Before use, review and agree to the [Bazutte Terms of Service](https://info.bazutte.com/terms) and [Privacy Policy](https://info.bazutte.com/privacy). The [YouTube Terms of Service](https://www.youtube.com/t/terms) also apply, and users must agree to them. See the [Google Privacy Policy](https://policies.google.com/privacy) for Google's data practices.
+
+Tool arguments, including search conditions and identifiers, are sent to Bazutte. Results, including video and channel information, metrics, and reports, are passed to the AI client you use. Check that service's settings, terms, and privacy policy for its storage, sharing, and model-improvement practices. Authorizing a Bazutte connection does not authorize operations on your YouTube account or access to private YouTube analytics.
+
+To disconnect, remove or disconnect Bazutte in your AI client's MCP or Connectors settings. Disconnecting does not necessarily delete conversations or saved reports held by the AI service. Follow that service's deletion procedures for its history and saved files. For Bazutte data inquiries or deletion requests, use the contact listed in its Privacy Policy.
 
 The package contains manifests, connection settings, and skills written in natural language. It has no installation scripts or lifecycle hooks. Adding it from Claude's Plugins page does not require Git on your computer.
 
@@ -105,7 +127,7 @@ plugins/bazutte/
   mcp.json                              # Codex MCP settings / Codex用MCP設定
   .claude-plugin/plugin.json             # Claude Code manifest / Claude Code用の定義
   .mcp.json                             # Claude Code MCP settings / Claude Code用MCP設定
-  skills/youtube-research/SKILL.md       # YouTube research / 動画・チャンネル調査
+  skills/bazutte-research/SKILL.md        # Bazutte research / 動画・チャンネル調査
 ```
 
 Both catalogs expose `bazutte@bazutte-plugins`. Client-specific MCP settings point to the same production endpoint.
@@ -118,7 +140,7 @@ For Claude Code, run `claude plugin marketplace update bazutte-plugins`, followe
 
 ## Release status
 
-Version `0.2.0` adds a YouTube research skill. Once it reaches the distribution repository's `main` branch, use the update commands above to get it.
+Version `0.4.0` renames the research skill from `youtube-research` to `bazutte-research` and clarifies the provider, data sources, custom metrics, terms, and data sharing with AI clients. Update any invocations that use the old name. Guidance for preserving every returned field, thumbnails, spreading rate, and hit score remains available. Once it reaches the distribution repository's `main` branch, use the update commands above to get it. The server and plugin are updated separately; server-generated reports are used only when the connected server supports them.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes. The distribution repository provides user-facing files on `main` and version tags.
 

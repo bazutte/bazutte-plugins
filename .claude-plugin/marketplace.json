@@ -7,7 +7,7 @@
     {
       "name": "bazutte",
       "source": "./plugins/bazutte",
-      "description": "BazutteでYouTubeを調査・分析 / Research and analyze YouTube with Bazutte",
+      "description": "Bazutteの保存データでYouTubeの動画・チャンネルを調査 / Research YouTube videos and channels using Bazutte's stored data",
       "homepage": "https://github.com/bazutte/bazutte-plugins"
     }
   ],
