@@ -17,20 +17,22 @@ The plugin connects to Bazutte's production MCP endpoint. Installing or enabling
 
 ## Quick start
 
+The Bazutte plugin is not yet listed in any AI's official directory. Add the GitHub repository `bazutte/bazutte-plugins` as a marketplace, then install Bazutte from it.
+
 ### Claude (web and regular app)
 
 1. Open [Claude's Plugins page](https://claude.ai/customize/plugins) and select **Add → Add marketplace**.
 2. Enter `https://github.com/bazutte/bazutte-plugins` to add the marketplace, then add the **Bazutte** plugin it lists.
 3. Open the plugin's **Connectors** tab. If Bazutte is not added yet, select **Add**, then **Connect**. Sign in to Bazutte and grant access.
 
-No CLI installation or manual MCP URL entry is needed. For Team and Enterprise, an owner must add the Bazutte connector first. For a Free plan or an account without the plugin menu, select Claude on [Bazutte's AI integration page](https://bazutte.com/ai_integration) and open the manual setup details.
+No CLI installation or manual MCP URL entry is needed. The plugin also syncs to the Claude apps and Claude Code signed in to the same account. For Team and Enterprise, an owner must add the Bazutte connector first. For a Free plan or an account without the plugin menu, select Claude on [Bazutte's AI integration page](https://bazutte.com/ai_integration) and open the manual setup details.
 
-For Codex or Claude Code, install the AI's CLI on the same computer first. Run the three commands below in a terminal, then sign in to Bazutte in your browser. The app and CLI use the same setup.
+For Codex or Claude Code, install the AI's CLI on the same computer first. Run the commands below in a terminal, then sign in to Bazutte in the browser that the last command opens. The app and CLI use the same setup.
 
 ### Codex (app, CLI, and IDE extension)
 
 ```bash
-codex plugin marketplace add https://github.com/bazutte/bazutte-plugins.git --ref main
+codex plugin marketplace add bazutte/bazutte-plugins
 codex plugin add bazutte@bazutte-plugins
 codex mcp login bazutte
 ```
@@ -40,14 +42,13 @@ The third command starts Bazutte OAuth authentication. Complete sign-in and cons
 ### Claude Code (app and CLI)
 
 ```bash
-claude plugin marketplace add https://github.com/bazutte/bazutte-plugins.git#main
-claude plugin install bazutte@bazutte-plugins
+claude plugin install bazutte --marketplace bazutte/bazutte-plugins
 claude mcp login plugin:bazutte:bazutte
 ```
 
-Run the third command in an interactive terminal. Complete sign-in and consent, then reopen Claude Code and start a new conversation. Use a local session in the app. If the login command is unavailable, open `/mcp` in a conversation and select **Authenticate** for `plugin:bazutte:bazutte`.
+The first command adds the marketplace and installs the plugin. If it fails, update Claude Code with `claude update`. Run the second command in an interactive terminal. Complete sign-in and consent, then reopen Claude Code and start a new conversation. Use a local session in the app. If the login command is unavailable, open `/mcp` in a conversation and select **Authenticate** for `plugin:bazutte:bazutte`.
 
-For ChatGPT, follow the connector instructions on [Bazutte's AI integration page](https://bazutte.com/ai_integration).
+ChatGPT cannot add a GitHub marketplace from its interface, so register the MCP URL instead. Follow the instructions on [Bazutte's AI integration page](https://bazutte.com/ai_integration). To also use the research skill, install the plugin with the Codex steps above.
 
 ## Ask in plain language
 
@@ -103,7 +104,7 @@ The package contains manifests, connection settings, and skills written in natur
 | Codex CLI | `plugins/bazutte/plugin.json` | `mcp.json` (`streamable-http`) | Bazutte OAuth |
 | Claude Code | `plugins/bazutte/.claude-plugin/plugin.json` | `.mcp.json` (`http`) | Bazutte OAuth |
 
-The connection definitions were checked with Codex CLI `0.160.0` and Claude Code `2.1.284`. These are tested versions, not minimum-version guarantees. The Claude UI instructions follow the official documentation; a live account connection has not been tested.
+The install commands were checked with Codex CLI `0.162.0` and Claude Code `2.1.295`. These are tested versions, not minimum-version guarantees. The Claude UI instructions follow the official documentation; a live account connection has not been tested.
 
 ## Troubleshooting
 

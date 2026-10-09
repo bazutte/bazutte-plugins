@@ -17,20 +17,22 @@ Claude・Claude Code・Codexから、[Bazutte](https://bazutte.com)の保存デ�
 
 ## 導入手順
 
+Bazutteプラグインは各AIの公式ディレクトリにはまだ掲載していません。GitHubの`bazutte/bazutte-plugins`をマーケットとして追加し、そこからBazutteを導入してください。
+
 ### Claude（ブラウザ・通常アプリ）
 
 1. [Claudeのプラグイン画面](https://claude.ai/customize/plugins)で「Add → Add marketplace」を選びます。
 2. `https://github.com/bazutte/bazutte-plugins`を入力し、マーケットを追加します。表示された「Bazutte」を追加してください。
 3. プラグインの「Connectors」を開きます。Bazutteが未追加なら「Add」で追加し、「Connect」で接続してください。Bazutteにログインして接続を許可します。
 
-CLIのインストールやMCP URLの手入力は不要です。Team・Enterpriseでは、管理者が先にBazutteのコネクタを追加してください。無料プラン・プラグインメニューがない場合は、[Bazutteの「AIと連携」](https://bazutte.com/ai_integration)でClaudeを選び、補足にある手動設定を利用できます。
+CLIのインストールやMCP URLの手入力は不要です。追加したプラグインは、同じアカウントでログインしたClaudeのアプリとClaude Codeにも同期されます。Team・Enterpriseでは、管理者が先にBazutteのコネクタを追加してください。無料プラン・プラグインメニューがない場合は、[Bazutteの「AIと連携」](https://bazutte.com/ai_integration)でClaudeを選び、補足にある手動設定を利用できます。
 
-Codex・Claude Codeは、同じPCに各AIのCLIを先にインストールしてください。以下の3行をターミナルで実行し、ブラウザでBazutteにログインします。アプリとCLIの手順は共通です。
+Codex・Claude Codeは、同じPCに各AIのCLIを先にインストールしてください。以下のコマンドをターミナルで実行し、最後の行で開くブラウザでBazutteにログインします。アプリとCLIの手順は共通です。
 
 ### Codex（アプリ・CLI・エディタ拡張）
 
 ```bash
-codex plugin marketplace add https://github.com/bazutte/bazutte-plugins.git --ref main
+codex plugin marketplace add bazutte/bazutte-plugins
 codex plugin add bazutte@bazutte-plugins
 codex mcp login bazutte
 ```
@@ -40,14 +42,13 @@ codex mcp login bazutte
 ### Claude Code（アプリ・CLI）
 
 ```bash
-claude plugin marketplace add https://github.com/bazutte/bazutte-plugins.git#main
-claude plugin install bazutte@bazutte-plugins
+claude plugin install bazutte --marketplace bazutte/bazutte-plugins
 claude mcp login plugin:bazutte:bazutte
 ```
 
-3行目は対話できる端末で実行してください。ブラウザで接続を許可し、Claude Codeを開き直して新しい会話を始めます。アプリではローカルセッションを使ってください。認証コマンドが使えない場合は、会話で`/mcp`を開き、`plugin:bazutte:bazutte`の「Authenticate」から認証できます。
+1行目でマーケットの追加とプラグインの導入をまとめて行います。エラーになる場合は`claude update`でClaude Codeを最新にしてください。2行目は対話できる端末で実行し、ブラウザで接続を許可して、Claude Codeを開き直して新しい会話を始めます。アプリではローカルセッションを使ってください。認証コマンドが使えない場合は、会話で`/mcp`を開き、`plugin:bazutte:bazutte`の「Authenticate」から認証できます。
 
-ChatGPTをお使いの場合は、[Bazutteの「AIと連携」](https://bazutte.com/ai_integration)でコネクタの導入手順を確認してください。
+ChatGPTの画面からはGitHubのマーケットを追加できないため、接続先URLを登録して使います。手順は[Bazutteの「AIと連携」](https://bazutte.com/ai_integration)を確認してください。調査skillも使う場合は、上記のCodexの手順でプラグインを導入してください。
 
 ## そのまま質問する
 
@@ -103,7 +104,7 @@ Bazutteで昨日公開された動画の再生数上位100件を、登録者3,00
 | Codex CLI | `plugins/bazutte/plugin.json` | `mcp.json`（`streamable-http`） | Bazutte OAuth |
 | Claude Code | `plugins/bazutte/.claude-plugin/plugin.json` | `.mcp.json`（`http`） | Bazutte OAuth |
 
-接続定義はCodex CLI `0.160.0`とClaude Code `2.1.284`で確認しています。確認した版であり、最低対応版を保証するものではありません。Claudeの画面からの追加は公式仕様に基づく手順で、実アカウントでの接続は未検証です。
+導入コマンドはCodex CLI `0.162.0`とClaude Code `2.1.295`で確認しています。確認した版であり、最低対応版を保証するものではありません。Claudeの画面からの追加は公式仕様に基づく手順で、実アカウントでの接続は未検証です。
 
 ## トラブル対応
 
