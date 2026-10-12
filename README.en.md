@@ -78,7 +78,7 @@ Ask in plain language. You can also invoke `/bazutte:bazutte-research` in Claude
 
 You can research video rankings, channel comparisons and details, past uploads, video metric history, keyword rankings, channel name changes, and stored ban and reinstatement history. Ask "What can Bazutte do?" for examples based on the connected tools' descriptions. Date ranges, limits, and permissions vary by tool.
 
-When you ask to save every field, the skill avoids selecting a subset of columns and preserves the returned rows, fields, conditions, and warnings. It retrieves and saves the server's HTML report when supported, or builds a report from the retrieved data otherwise. Server reports are temporary; resource reading and file saving also depend on your AI client. "Every field" refers to the retrieved data, not every record stored in Bazutte.
+When you ask to save every field, the skill avoids selecting a subset of columns and preserves the returned rows, fields, conditions, and warnings. It retrieves and saves the server's HTML report when supported, or builds a report from the retrieved data otherwise. Unless you specify a location, reports are saved under `bazutte-reports/` in the working directory. Full-field retrieval proceeds in pages of 50 or fewer, and when the AI client offloads a large result to a file, the report is saved from that file. Server reports are temporary; resource reading and file saving also depend on your AI client. "Every field" refers to the retrieved data, not every record stored in Bazutte.
 
 Returned thumbnails use external image URLs and retain links to the original videos. Image links are provided when images cannot be displayed. Spreading rate, buzz score, and hit score are Bazutte's own multiplier metrics, not official YouTube metrics or ratings. A hit score of `1.0` can also be a fallback when the score cannot be calculated.
 
@@ -141,7 +141,7 @@ For Claude Code, run `claude plugin marketplace update bazutte-plugins`, followe
 
 ## Release status
 
-Version `0.4.0` renames the research skill from `youtube-research` to `bazutte-research` and clarifies the provider, data sources, custom metrics, terms, and data sharing with AI clients. Update any invocations that use the old name. Guidance for preserving every returned field, thumbnails, spreading rate, and hit score remains available. Once it reaches the distribution repository's `main` branch, use the update commands above to get it. The server and plugin are updated separately; server-generated reports are used only when the connected server supports them.
+Version `0.4.1` adds guidance to the research skill for narrowing arguments after a response-too-large error, a default report location, and saving reports when the AI client offloads a large result to a file. Version `0.4.0` renamed the research skill from `youtube-research` to `bazutte-research` and clarified the provider, data sources, custom metrics, terms, and data sharing with AI clients. Update any invocations that use the old name. Guidance for preserving every returned field, thumbnails, spreading rate, and hit score remains available. Once it reaches the distribution repository's `main` branch, use the update commands above to get it. The server and plugin are updated separately; server-generated reports are used only when the connected server supports them.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes. The distribution repository provides user-facing files on `main` and version tags.
 

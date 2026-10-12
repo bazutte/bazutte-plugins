@@ -1,5 +1,11 @@
 # 更新履歴 / Changelog
 
+## 0.4.1 — 2026-10-13
+
+- 応答が大きすぎるエラーでは同じ呼び出しを繰り返さず、チャンネル詳細のキーワード順位と関連チャンネルの項目を絞って1回だけ再試行する手順を追加。 / Add guidance to retry once with narrowed keyword rank and related-channel fields instead of repeating the same call after a response-too-large error.
+- 全項目の取得を1ページ50件以下に分け、AIクライアントが大きな結果をファイルへ退避した場合はそのファイルから資料を保存する手順を追加。 / Retrieve full-field pages of 50 or fewer and save reports from the file when the AI client offloads a large result.
+- 資料の既定の保存先を作業ディレクトリ直下の`bazutte-reports/`に設定。 / Set the default report location to `bazutte-reports/` in the working directory.
+
 ## 0.4.0 — 2026-10-05
 
 - 調査skillを`bazutte-research`へ改名。旧名の呼び出しは新しい名前へ変更してください。 / Rename the research skill to `bazutte-research`; update invocations using the previous name.
