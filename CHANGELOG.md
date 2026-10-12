@@ -1,5 +1,9 @@
 # 更新履歴 / Changelog
 
+## 0.4.2 — 2026-10-13
+
+- サーバー側で廃止した接続確認用の`ping`ツールへの案内を調査skillから削除。 / Remove research-skill guidance for the connection-check `ping` tool, which the server no longer provides.
+
 ## 0.4.1 — 2026-10-13
 
 - 応答が大きすぎるエラーでは同じ呼び出しを繰り返さず、チャンネル詳細のキーワード順位と関連チャンネルの項目を絞って1回だけ再試行する手順を追加。 / Add guidance to retry once with narrowed keyword rank and related-channel fields instead of repeating the same call after a response-too-large error.
