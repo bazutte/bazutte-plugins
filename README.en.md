@@ -46,7 +46,14 @@ claude plugin install bazutte --marketplace bazutte/bazutte-plugins
 claude mcp login plugin:bazutte:bazutte
 ```
 
-The first command adds the marketplace and installs the plugin. If it fails, update Claude Code with `claude update`. Run the second command in an interactive terminal. Complete sign-in and consent, then reopen Claude Code and start a new conversation. Use a local session in the app. If the login command is unavailable, open `/mcp` in a conversation and select **Authenticate** for `plugin:bazutte:bazutte`.
+The first command adds the marketplace and installs the plugin. This form requires Claude Code `2.1.292` or later. If it fails, update Claude Code with `claude update`, or replace the first command with these two commands:
+
+```bash
+claude plugin marketplace add bazutte/bazutte-plugins
+claude plugin install bazutte@bazutte-plugins
+```
+
+Run `claude mcp login plugin:bazutte:bazutte` in an interactive terminal. Complete sign-in and consent, then reopen Claude Code and start a new conversation. Use a local session in the app. If the login command is unavailable, open `/mcp` in a conversation and select **Authenticate** for `plugin:bazutte:bazutte`.
 
 ChatGPT cannot add a GitHub marketplace from its interface, so register the MCP URL instead. Follow the instructions on [Bazutte's AI integration page](https://bazutte.com/ai_integration). To also use the research skill, install the plugin with the Codex steps above.
 
@@ -76,7 +83,7 @@ Ask in plain language. You can also invoke `/bazutte:bazutte-research` in Claude
 
 ## Available research and reports
 
-You can research video rankings, channel comparisons and details, past uploads, video metric history, keyword rankings, channel name changes, and stored ban and reinstatement history. Ask "What can Bazutte do?" for examples based on the connected tools' descriptions. Date ranges, limits, and permissions vary by tool.
+You can research video rankings, channel comparisons and details, similar and competing channels, past uploads and a channel's uploads that outperformed its usual results, upload performance at 1, 3, 7, and 28 days after publication, video metric history, keyword rankings, channel name changes, stored ban and reinstatement history, a channel's ban risk, and weekly, monthly, or quarterly ban and rename reports. Identify channels by ID, `@handle`, channel URL, or current or former name, and compare up to 100 at once. Identify videos by ID or video URL. Ask "What can Bazutte do?" for examples based on the connected tools' descriptions. Date ranges, limits, and permissions vary by tool.
 
 When you ask to save every field, the skill avoids selecting a subset of columns and preserves the returned rows, fields, conditions, and warnings. It retrieves and saves the server's HTML report when supported, or builds a report from the retrieved data otherwise. Unless you specify a location, reports are saved under `bazutte-reports/` in the working directory. Full-field retrieval proceeds in pages of 50 or fewer, and when the AI client offloads a large result to a file, the report is saved from that file. Server reports are temporary; resource reading and file saving also depend on your AI client. "Every field" refers to the retrieved data, not every record stored in Bazutte.
 
@@ -141,7 +148,7 @@ For Claude Code, run `claude plugin marketplace update bazutte-plugins`, followe
 
 ## Release status
 
-Version `0.4.2` removes research-skill guidance for the connection-check `ping` tool, which the server no longer provides. Version `0.4.1` adds guidance to the research skill for narrowing arguments after a response-too-large error, a default report location, and saving reports when the AI client offloads a large result to a file. Version `0.4.0` renamed the research skill from `youtube-research` to `bazutte-research` and clarified the provider, data sources, custom metrics, terms, and data sharing with AI clients. Update any invocations that use the old name. Guidance for preserving every returned field, thumbnails, spreading rate, and hit score remains available. Once it reaches the distribution repository's `main` branch, use the update commands above to get it. The server and plugin are updated separately; server-generated reports are used only when the connected server supports them.
+Version `0.6.0` adds research-skill steps to identify channels by passing `@handle`s or channel URLs directly, find competitors from similar channels, compare upload performance by views at fixed days after publication, and find a channel's outlier uploads. It also covers channel-detail section selection, fetching truncated sections, and using the fixes suggested in error responses. These steps are available when the connected server supports them. Version `0.5.0` adds research-skill steps to go from a channel URL, ID, or former name to details, uploads, and video history, to compare competitors using related channels, to research from keywords, and to read ban risk and ban and rename reports. When no period is given for uploads, the skill uses the last 30 days without waiting for confirmation. Version `0.4.2` removes research-skill guidance for the connection-check `ping` tool, which the server no longer provides. Version `0.4.1` adds guidance to the research skill for narrowing arguments after a response-too-large error, a default report location, and saving reports when the AI client offloads a large result to a file. Version `0.4.0` renamed the research skill from `youtube-research` to `bazutte-research` and clarified the provider, data sources, custom metrics, terms, and data sharing with AI clients. Update any invocations that use the old name. Guidance for preserving every returned field, thumbnails, spreading rate, and hit score remains available. Once it reaches the distribution repository's `main` branch, use the update commands above to get it. The server and plugin are updated separately; server-generated reports are used only when the connected server supports them.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes. The distribution repository provides user-facing files on `main` and version tags.
 

@@ -1,5 +1,21 @@
 # 更新履歴 / Changelog
 
+## 0.6.0 — 2026-10-16
+
+- `@handle`・チャンネルURL・IDを変換せずにまとめて渡してチャンネルを特定する手順に変更し、名前経由で照合する回り道を削除。動画URLから動画の推移を調べる手順も追加。 / Identify channels by passing `@handle`s, channel URLs, and IDs directly in one request instead of matching by name, and look up video history from a video URL.
+- 類似チャンネルTop100から競合を探す手順と、公開後1・3・7・28日時点の再生数分布で投稿の伸び方を比べる手順を追加。チャンネル内で普段より伸びた投稿をヒットスコア順で探す手順も追加。 / Add steps to find competitors from the top 100 similar channels, compare upload performance by views at 1, 3, 7, and 28 days after publication, and find a channel's outlier uploads by hit score.
+- チャンネル詳細のセクション選択と、省略された続きを`next_request`で取得する手順、エラーの`invalid_fields`・`retry_after_seconds`・`suggested_request`の使い方、ランキングのページ送り中に更新された場合の取り直しを追加。 / Cover channel-detail section selection, fetching truncated sections with `next_request`, using `invalid_fields`, `retry_after_seconds`, and `suggested_request` from errors, and restarting pagination after a ranking refresh.
+- 登録者増加率の分母、ヒットスコアと公開後日数別の中央値比の違いを明記し、呼び出し回数の上限を最新のサーバーに合わせて更新。 / Explain the subscriber growth-rate denominator and the difference between hit score and the per-age median ratio, and update rate limits to match the current server.
+
+## 0.5.0 — 2026-10-15
+
+- チャンネルURL・ID・旧チャンネル名からチャンネルを特定し、詳細・投稿一覧・動画の指標履歴へ進む手順を追加。`@handle`しか分からない場合の確かめ方も明記。 / Add steps to identify a channel from its URL, ID, or former name and continue to details, uploads, and video metric history, including how to verify a channel known only by its `@handle`.
+- 関連チャンネルTop100から候補を選び、最大100チャンネルをまとめて比較する手順と、キーワードからチャンネル・動画を探す手順を追加。 / Add steps to pick competitors from the top 100 related channels and compare up to 100 channels at once, and to find channels and videos from keywords.
+- BAN・改名の週次・月次・四半期レポートと、チャンネル詳細のBANリスクの読み方を追加。 / Cover weekly, monthly, and quarterly ban and rename reports and how to read a channel's ban risk.
+- 投稿一覧で期間の指定がなければ確認を待たずに直近30日を使い、採用した期間を示すように変更。 / Use the last 30 days for uploads when no period is given, stating the period instead of waiting for confirmation.
+- 応答が大きすぎる場合は、全項目の依頼なら件数を減らしてページを分け、それ以外は列を絞るように整理。ツールごとの呼び出し回数の上限を追記。 / Clarify that full-field requests split pages while other requests narrow fields after a response-too-large error, and document per-tool rate limits.
+- 調査skillの説明に、チャンネルURL・名前変更・BANリスク・キーワード・関連チャンネルなどの依頼例を追加。 / Expand the research skill description with requests such as channel URLs, name changes, ban risk, keywords, and related channels.
+
 ## 0.4.2 — 2026-10-13
 
 - サーバー側で廃止した接続確認用の`ping`ツールへの案内を調査skillから削除。 / Remove research-skill guidance for the connection-check `ping` tool, which the server no longer provides.
