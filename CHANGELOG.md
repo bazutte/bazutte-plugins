@@ -1,5 +1,11 @@
 # 更新履歴 / Changelog
 
+## 0.7.0 — 2026-10-17
+
+- `channel_id`が`@handle`・チャンネルURLを受け付けるサーバーでは、`get_channels`でIDを引かずにそのまま渡す手順に変更。動画ランキングの`channel_ids`も同じ。`UC…`だけを受け付けるサーバーでは従来どおりIDへ解決する。 / Pass `@handle`s and channel URLs directly as `channel_id` (and ranking `channel_ids`) when the server accepts them, skipping the `get_channels` lookup; keep resolving to IDs on servers that accept only `UC…` IDs.
+- 動画の推移に直前の記録日からの増分が返る場合はその値で日ごとの伸びを読み、返らない場合は記録の間隔を添えて累計の差を示す手順を追加。 / Read daily growth from per-snapshot differences when video history returns them, otherwise show cumulative differences with the snapshot interval.
+- 投稿一覧の期間上限、公開後の比較日数・本数をツール説明に従う形にし、期間超過エラーの`suggested_request`で取り直す手順と、`engagement_rate`・`views_per_day`の読み方を追加。 / Follow tool descriptions for upload period limits and performance-trend ages and counts, retry period errors with `suggested_request`, and explain `engagement_rate` and `views_per_day`.
+
 ## 0.6.0 — 2026-10-16
 
 - `@handle`・チャンネルURL・IDを変換せずにまとめて渡してチャンネルを特定する手順に変更し、名前経由で照合する回り道を削除。動画URLから動画の推移を調べる手順も追加。 / Identify channels by passing `@handle`s, channel URLs, and IDs directly in one request instead of matching by name, and look up video history from a video URL.

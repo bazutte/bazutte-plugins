@@ -1,6 +1,6 @@
 {
   "name": "bazutte",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Bazutteの保存データでYouTubeの動画・チャンネルを調査 / Research YouTube videos and channels using Bazutte's stored data",
   "author": {
     "name": "Bazutte"
