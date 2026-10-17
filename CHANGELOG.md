@@ -1,5 +1,10 @@
 # 更新履歴 / Changelog
 
+## 0.8.0 — 2026-10-17
+
+- サーバーが動画の指標履歴（`get_video_history`）、公開後の伸び方の比較（`get_channel_performance_trends`）、チャンネル詳細の日ごとの推移と投稿件数（`statistics`）を返さなくなったため、それらを使う手順を削除。求められたときは取得できないと伝え、直近30日の増分や動画ランキングの増分で答えられる範囲を示す。 / Remove steps that relied on video history (`get_video_history`), performance trends (`get_channel_performance_trends`), and channel-detail daily statistics and upload counts (`statistics`), which the server no longer returns. When asked, say they are unavailable and offer what the last-30-day changes and ranking growth can answer.
+- 投稿一覧（`get_channel_videos`）が直近に更新された投稿（種別ごとにおおむね最新100本）だけを返し、期間を省略しても直近30日に絞らなくなったことに合わせて手順を更新。 / Update upload-list steps: `get_channel_videos` now returns only recently updated uploads (roughly the latest 100 per type) and no longer defaults to the last 30 days.
+
 ## 0.7.0 — 2026-10-17
 
 - `channel_id`が`@handle`・チャンネルURLを受け付けるサーバーでは、`get_channels`でIDを引かずにそのまま渡す手順に変更。動画ランキングの`channel_ids`も同じ。`UC…`だけを受け付けるサーバーでは従来どおりIDへ解決する。 / Pass `@handle`s and channel URLs directly as `channel_id` (and ranking `channel_ids`) when the server accepts them, skipping the `get_channels` lookup; keep resolving to IDs on servers that accept only `UC…` IDs.
