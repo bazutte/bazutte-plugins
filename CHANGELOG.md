@@ -1,5 +1,9 @@
 # 更新履歴 / Changelog
 
+## 0.8.2 — 2026-10-31
+
+- 呼び出し回数の上限をサーバーの現在値（どのツールも1ユーザー毎分60回）に直し、`CHANNEL_NOT_FOUND`は利用枠を消費しないことに合わせた。推移や動画の説明文はMCPでは返さず、推移を返すツール名を推測して呼ばないこと、チャンネルの推移はWeb画面で見られることを追加。 / Update call limits to the server's current values (60 per minute per user for every tool), note that `CHANNEL_NOT_FOUND` does not consume the usage quota, and add that daily trends and video descriptions are not returned over MCP, that the AI should not guess tool names for them, and that channel trends are viewable on the web.
+
 ## 0.8.1 — 2026-10-31
 
 - 日付・日時の引数は、利用者の「2026年7月1日」「先月」などを西暦の`YYYY-MM-DD`（日本時間）か`YYYY-MM-DDTHH:MM:SS+09:00`に直して送る手順を追加。相対表現は現在日時から絶対日付に直し、期間は下限と上限の両方を送り、断られたら1回だけ直す。 / Convert date and time arguments such as "2026年7月1日" or "last month" to `YYYY-MM-DD` (Japan time) or `YYYY-MM-DDTHH:MM:SS+09:00` before sending, resolve relative dates from the current time, send both bounds of a period, and retry only once after a rejection.

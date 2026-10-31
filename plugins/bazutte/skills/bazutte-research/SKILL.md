@@ -21,7 +21,7 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 | 特定のチャンネルを深掘りする | 下の「チャンネルを特定して深掘りする」の順で進める。 |
 | 競合を比較する | 下の「競合・類似チャンネルを比較する」の順で進める。一覧で答えられる比較では各チャンネルの詳細を追加取得しない。 |
 | チャンネルの直近の投稿を調べる | `get_channel_videos`で読む。対象は直近に更新された投稿（種別ごとにおおむね最新100本）だけで、それより古い投稿は返らない。公開からの日数をそろえた比較には、`get_video_ranking`の`three_days_view_count`（公開から3日間の再生数）を使う。 |
-| 日ごとの推移や動画の指標履歴を求められた | Bazutte MCPは日ごとの推移、動画の指標履歴、公開後の日数別の伸び方を返さない。取得できないと伝え、代わりに`get_channel_detail`の`channel.metrics`（直近30日の増分）や`get_video_ranking`の期間別の増分で答えられる範囲を示す。 |
+| 日ごとの推移や動画の指標履歴を求められた | Bazutte MCPは日ごとの推移、動画の指標履歴、公開後の日数別の伸び方、動画の説明文を返さない。推移を返すツール名を推測して呼ばない。MCPでは取得できず、チャンネルの推移は返された`bazutte_url`のWeb画面で見られると伝え、代わりに`get_channel_detail`の`channel.metrics`（直近30日の増分）や`get_video_ranking`の期間別の増分で答えられる範囲を示す。 |
 | キーワードの傾向を調べる | 下の「キーワードから調べる」の順で進める。YouTube全体の検索量と同一視しない。 |
 | チャンネル名の変更を調べる | 個別の履歴は`get_channel_title_changes`、期間全体の傾向は`get_channel_change_report`の`kind: renamed`。別チャンネルとの取り違えを避けるためIDも残す。 |
 | BAN・復旧の履歴を調べる | 個別の履歴は`get_banned_channels`、期間全体の傾向は`get_channel_change_report`の`kind: banned`、1チャンネルのBANリスクは`get_channel_detail`の`ban_risk`。現在のYouTubeでの状態や停止理由は、応答で確認できる範囲だけ説明する。 |
@@ -70,7 +70,7 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 
 投稿一覧の期間は依頼から読み取る（「先月」「今年」など）。指定がなければ期間を付けずに取得し、確認を待たない。保持範囲より前の期間を求められたら、返った投稿の範囲と`warnings`を添えて伝える。
 
-呼び出し回数には1ユーザー単位の上限がある。`get_channel_videos`は毎分20回、`get_keyword_ranking`は毎分60回、`get_channels`・`get_channel_title_changes`・`get_channel_detail`・`get_similar_channels`は4つの合計で毎分20回。多数のチャンネルや動画を調べるときは、`channel_ids`でまとめて取得し、1件ずつの呼び出しを繰り返さない。
+呼び出し回数には1ユーザー単位の上限がある。`get_channel_videos`は毎分60回、`get_keyword_ranking`は毎分60回、`get_channels`・`get_channel_title_changes`・`get_channel_detail`・`get_similar_channels`は4つの合計で毎分60回。多数のチャンネルや動画を調べるときは、`channel_ids`でまとめて取得し、1件ずつの呼び出しを繰り返さない。
 
 ## 調査結果を使える形で返す
 
@@ -113,6 +113,6 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 
 `RESPONSE_TOO_LARGE`は応答が上限を超えたことを示し、同じ引数で繰り返しても解消しない。失敗した呼び出しも利用枠を消費するため、`suggested_request`があればそれを使い、なければ引数を絞って1回だけ再試行する。`get_channel_detail`では`sections`で必要なセクションだけを選ぶか、`keywords.filters.max_rank`・`related_channels.limit`で件数を絞る。一覧系のツールでは、全項目の依頼なら列を減らさず`limit`を半分にして`page`で続きを取り、それ以外の依頼なら必要な列だけを`fields`で選ぶ。
 
-`get_channel_detail`は応答が大きいとき、エラーにせずキーワード、次に関連チャンネルを後ろから削って返す。`sections.<名前>.truncated`が`true`なら、空の配列でも0件ではない。続きが必要なときだけ、そのセクションの`next_request`にある`tool`と`arguments`をそのまま渡し、関連チャンネルや名前変更履歴などの全件を回収する。`CHANNEL_NOT_FOUND`も利用枠を消費するため、IDを確かめてから呼び直す。
+`get_channel_detail`は応答が大きいとき、エラーにせずキーワード、次に関連チャンネルを後ろから削って返す。`sections.<名前>.truncated`が`true`なら、空の配列でも0件ではない。続きが必要なときだけ、そのセクションの`next_request`にある`tool`と`arguments`をそのまま渡し、関連チャンネルや名前変更履歴などの全件を回収する。`CHANNEL_NOT_FOUND`は利用枠を消費しないが、毎分の呼び出し回数には数えられるため、IDを確かめてから呼び直す。
 
 ツールを使えなければ、データを取得できていないと伝える。結果の代わりに架空の応答や数値を出さない。OAuth認証は利用者本人が行い、トークンやパスワードを会話へ貼るよう求めない。Bazutteへの接続許可を、YouTubeアカウントの操作権限や非公開アナリティクスの取得許可と同一視しない。導入・利用条件・データ共有・接続解除の案内は[配布元のREADME](https://github.com/bazutte/bazutte-plugins)を使う。
