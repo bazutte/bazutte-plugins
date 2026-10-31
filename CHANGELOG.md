@@ -1,5 +1,9 @@
 # 更新履歴 / Changelog
 
+## 0.8.1 — 2026-10-31
+
+- 日付・日時の引数は、利用者の「2026年7月1日」「先月」などを西暦の`YYYY-MM-DD`（日本時間）か`YYYY-MM-DDTHH:MM:SS+09:00`に直して送る手順を追加。相対表現は現在日時から絶対日付に直し、期間は下限と上限の両方を送り、断られたら1回だけ直す。 / Convert date and time arguments such as "2026年7月1日" or "last month" to `YYYY-MM-DD` (Japan time) or `YYYY-MM-DDTHH:MM:SS+09:00` before sending, resolve relative dates from the current time, send both bounds of a period, and retry only once after a rejection.
+
 ## 0.8.0 — 2026-10-17
 
 - サーバーが動画の指標履歴（`get_video_history`）、公開後の伸び方の比較（`get_channel_performance_trends`）、チャンネル詳細の日ごとの推移と投稿件数（`statistics`）を返さなくなったため、それらを使う手順を削除。求められたときは取得できないと伝え、直近30日の増分や動画ランキングの増分で答えられる範囲を示す。 / Remove steps that relied on video history (`get_video_history`), performance trends (`get_channel_performance_trends`), and channel-detail daily statistics and upload counts (`statistics`), which the server no longer returns. When asked, say they are unavailable and offer what the last-30-day changes and ranking growth can answer.
