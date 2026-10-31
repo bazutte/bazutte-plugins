@@ -1,5 +1,21 @@
 # 更新履歴 / Changelog
 
+## 0.8.6 — 2026-10-31
+
+- 動画ランキング（`get_video_ranking`）が`filters.keywords`を受け付けるサーバーでは、キーワードやジャンルから動画を探すときにタイトルだけでなくタグ・チャンネル名も含めて探す手順に変更。Web画面の「キーワード・ジャンル・タイトル」検索と同じ全語ANDの部分一致で、受け付けないサーバーでは`filters.title_contains`を使う。尺（`min_duration_seconds`・`max_duration_seconds`）での絞り込みと、`tags`の取得も追加。 / When `get_video_ranking` accepts `filters.keywords`, search videos by keyword or genre across titles, tags, and channel names (all words must match, partial and case-insensitive), matching the web page's keyword search; fall back to `filters.title_contains` otherwise. Also add filtering by duration (`min_duration_seconds`, `max_duration_seconds`) and reading `tags`.
+
+## 0.8.5 — 2026-10-31
+
+- チャンネル詳細（`get_channel_detail`）が`long_term_posts`セクションを返すサーバーでは、公開が30日より前で直近7日間に再生が増えた投稿（長期再生）を種別ごとに最大10本ずつそこから読む手順を追加。Web画面の「長期再生」タブと同じ内容で、返さないサーバーではWeb画面で見られると伝える。 / Read long-running uploads (published more than 30 days ago and still gaining views in the last 7 days, up to 10 per type) from the `long_term_posts` section of `get_channel_detail` when the server returns it. It matches the web page's long-term tab; on servers without it, keep pointing to the web page.
+
+## 0.8.4 — 2026-10-31
+
+- チャンネル詳細の推移は`history.days`（既定・最大730日）だけで期間を指定し、180日未満は日ごと・180日以上は月ごとで返るサーバーの仕様に合わせた。`granularity`の指定を削除。 / Follow the server's channel-history contract: specify the period with `history.days` only (default and maximum 730), which returns daily rows under 180 days and monthly rows from 180 days. Remove the `granularity` argument.
+
+## 0.8.3 — 2026-10-31
+
+- チャンネル詳細（`get_channel_detail`）が`history`セクションを返すサーバーでは、登録者数・総再生数・投稿数の推移（既定は直近730日の月ごと、`granularity: "daily"`で日ごと・最大180日）をそこから読む手順を追加。返さないサーバーでは従来どおりWeb画面で見られると伝える。動画ごとの指標履歴と説明文は引き続き返さない。 / Read subscriber, total-view, and upload-count trends from the `history` section of `get_channel_detail` when the server returns it (monthly over the last 730 days by default, daily with `granularity: "daily"` for up to 180 days). On servers without it, keep pointing to the web page. Per-video metric history and descriptions are still not returned.
+
 ## 0.8.2 — 2026-10-31
 
 - 呼び出し回数の上限をサーバーの現在値（どのツールも1ユーザー毎分60回）に直し、`CHANNEL_NOT_FOUND`は利用枠を消費しないことに合わせた。推移や動画の説明文はMCPでは返さず、推移を返すツール名を推測して呼ばないこと、チャンネルの推移はWeb画面で見られることを追加。 / Update call limits to the server's current values (60 per minute per user for every tool), note that `CHANNEL_NOT_FOUND` does not consume the usage quota, and add that daily trends and video descriptions are not returned over MCP, that the AI should not guess tool names for them, and that channel trends are viewable on the web.

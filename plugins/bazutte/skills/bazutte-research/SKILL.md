@@ -1,6 +1,6 @@
 ---
 name: bazutte-research
-description: BazutteのMCPでYouTubeの伸びている動画を探し、競合や自分のチャンネルを比較・分析し、企画の根拠を調べる。動画ランキング、競合・関連・類似チャンネルの比較、チャンネルURL・@handle・チャンネルID・旧チャンネル名からの調査、直近の投稿、チャンネル内で普段より伸びた投稿、直近30日の再生数・登録者数の増分、キーワードの流行、チャンネル名の変更、BAN・復旧の履歴とBANリスク、BAN・改名の週次・月次レポート、全取得項目を残す資料、サムネイル・拡散率・ヒットスコア付きの一覧を求める依頼で使う。Bazutteでできること、使い方、利用枠の質問にも対応する。
+description: BazutteのMCPでYouTubeの伸びている動画を探し、競合や自分のチャンネルを比較・分析し、企画の根拠を調べる。動画ランキング、競合・関連・類似チャンネルの比較、チャンネルURL・@handle・チャンネルID・旧チャンネル名からの調査、直近の投稿、チャンネル内で普段より伸びた投稿、公開から時間が経っても伸び続けている投稿（長期再生）、直近30日の再生数・登録者数の増分、キーワードの流行、チャンネル名の変更、BAN・復旧の履歴とBANリスク、BAN・改名の週次・月次レポート、全取得項目を残す資料、サムネイル・拡散率・ヒットスコア付きの一覧を求める依頼で使う。Bazutteでできること、使い方、利用枠の質問にも対応する。
 ---
 
 # BazutteでYouTubeを調べる
@@ -17,11 +17,13 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 
 | 目的 | 調べ方と比較の観点 |
 | --- | --- |
-| 伸びている動画を探す | `get_video_ranking`で候補を取得する。再生数の多さ、最近の伸び、登録者規模に対する広がり、同じチャンネルの普段との差を区別し、依頼に合う指標を選ぶ。条件に使った登録者数や比較指標も結果に含める。1チャンネルの中で普段より伸びた投稿は、`get_channel_videos`を`order.field: hit_score`の降順で取得する。 |
+| 伸びている動画を探す | `get_video_ranking`で候補を取得する。再生数の多さ、最近の伸び、登録者規模に対する広がり、同じチャンネルの普段との差を区別し、依頼に合う指標を選ぶ。条件に使った登録者数や比較指標も結果に含める。ジャンルや話題で絞るときは、入力スキーマに`filters.keywords`があれば語を並べて渡す（各語をタイトル・タグ・チャンネル名のどれかに含む動画を全語ANDで返す）。尺は`min_duration_seconds`・`max_duration_seconds`（秒）で絞る。1チャンネルの中で普段より伸びた投稿は、`get_channel_videos`を`order.field: hit_score`の降順で取得する。 |
 | 特定のチャンネルを深掘りする | 下の「チャンネルを特定して深掘りする」の順で進める。 |
 | 競合を比較する | 下の「競合・類似チャンネルを比較する」の順で進める。一覧で答えられる比較では各チャンネルの詳細を追加取得しない。 |
 | チャンネルの直近の投稿を調べる | `get_channel_videos`で読む。対象は直近に更新された投稿（種別ごとにおおむね最新100本）だけで、それより古い投稿は返らない。公開からの日数をそろえた比較には、`get_video_ranking`の`three_days_view_count`（公開から3日間の再生数）を使う。 |
-| 日ごとの推移や動画の指標履歴を求められた | Bazutte MCPは日ごとの推移、動画の指標履歴、公開後の日数別の伸び方、動画の説明文を返さない。推移を返すツール名を推測して呼ばない。MCPでは取得できず、チャンネルの推移は返された`bazutte_url`のWeb画面で見られると伝え、代わりに`get_channel_detail`の`channel.metrics`（直近30日の増分）や`get_video_ranking`の期間別の増分で答えられる範囲を示す。 |
+| チャンネルの登録者数・再生数の推移を求められた | `get_channel_detail`の入力に`history`があるサーバーでは、`sections: ["history"]`で読む。期間は`history.days`（既定730日、最大730日）で指定し、180日未満は日ごと、180日以上は月ごとで返る（Web画面の推移グラフと同じ境界。応答の`granularity`で分かる）。値はその月・日の最大値で、Web画面の推移グラフと同じ。記録の無い日・月は返らないので、差を求めるときは使った2点の日付を添える。`history`が無いサーバーでは、推移はWeb画面（`bazutte_url`）で見られると伝え、`channel.metrics`（直近30日の増分）で答えられる範囲を示す。推移を返すツール名を推測して呼ばない。 |
+| 公開から時間が経っても伸び続けている投稿（長期再生）を求められた | `get_channel_detail`の`sections`に`long_term_posts`があるサーバーでは、`sections: ["long_term_posts"]`で読む。公開が30日より前の投稿のうち直近7日間に再生が増えたものを、種別（`kind`が`video`・`short`・`live`）ごとに`seven_days_view_count`（直近7日間の再生増）の多い順で最大10本ずつ返す。Web画面のチャンネル詳細「長期再生」タブと同じ内容で、集計時点は`refreshed_at`。`items`が空で`refreshed_at`が`null`なら、そのチャンネルに該当する投稿が無い。`get_channel_videos`は直近に更新された投稿しか返さないので、古い投稿の伸びはこちらで読む。`long_term_posts`が無いサーバーでは、長期再生はWeb画面で見られると伝え、`get_channel_videos`の`hit_score`で答えられる範囲を示す。 |
+| 動画の指標履歴や説明文を求められた | Bazutte MCPは動画ごとの指標履歴、公開後の日数別の伸び方、動画の説明文を返さない。推測したツール名や引数で呼ばず、`get_video_ranking`の期間別の増分で答えられる範囲を示す。 |
 | キーワードの傾向を調べる | 下の「キーワードから調べる」の順で進める。YouTube全体の検索量と同一視しない。 |
 | チャンネル名の変更を調べる | 個別の履歴は`get_channel_title_changes`、期間全体の傾向は`get_channel_change_report`の`kind: renamed`。別チャンネルとの取り違えを避けるためIDも残す。 |
 | BAN・復旧の履歴を調べる | 個別の履歴は`get_banned_channels`、期間全体の傾向は`get_channel_change_report`の`kind: banned`、1チャンネルのBANリスクは`get_channel_detail`の`ban_risk`。現在のYouTubeでの状態や停止理由は、応答で確認できる範囲だけ説明する。 |
@@ -32,7 +34,7 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 ### チャンネルを特定して深掘りする
 
 1. チャンネルを特定する。利用者が示した`UC…`のID・`@handle`・チャンネルURLは、変換せずに`get_channels`の`filters.channel_ids`へ渡す（混在可、最大100件）。`not_found_ids`に返ったものは保存データに見つからなかったと伝える。ハンドルの一部しか分からなければ`filters.handle`と`handle_match: fuzzy`で探す。名前しか分からなければ`filters.title_contains`で探し、同名の切り抜きなどと取り違えていないか登録者数やハンドルで確かめる。現在名で見つからなければ`get_channel_title_changes`の`filters.old_title_contains`で旧名から探す。候補が複数残って絞れないときだけ選んでもらう。以降のツールの`channel_id`の渡し方は「条件を決めて取得する」に従う。
-2. `get_channel_detail`で概要、指標（直近30日の再生数・登録者数の増分と種別ごとの投稿数は`channel.metrics`）、キーワード、関連チャンネル、名前変更・BAN履歴、`ban_risk`を読む。一部だけ要るときは`sections`で選ぶ。
+2. `get_channel_detail`で概要、指標（直近30日の再生数・登録者数の増分と種別ごとの投稿数は`channel.metrics`）、キーワード、関連チャンネル、名前変更・BAN履歴、`ban_risk`を読む。サーバーが対応していれば、推移（`history`）と長期再生（`long_term_posts`）も同じ呼び出しの`sections`で選べる。一部だけ要るときは`sections`で選ぶ。
 3. 投稿の一覧が要るときは`get_channel_videos`を使う。期間を省略すると、保持している直近の投稿をすべて対象にする。`warnings`が示すとおり古い投稿は含まれないため、それより前の投稿が無いとは言わない。
 4. チャンネルの普段より伸びた投稿を探すときは、`get_channel_videos`を`order.field: hit_score`の降順で取得するか、`filters.min_hit_score`で絞る。
 
@@ -47,7 +49,7 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 
 1. `get_keyword_ranking`で急上昇（`usage_surge`）や定番（`most_used`）のキーワードを読む。対象は各カテゴリの上位100件だけで、`filters.keyword_contains`もその範囲の検索になる。0件なら「上位100件に該当がない」と伝え、YouTube全体に存在しないとは言わない。
 2. そのキーワードを使うチャンネルは`get_channels`の`filters.channel_keyword`（動画タグの完全一致）で探す。
-3. そのキーワードを含む動画は`get_video_ranking`の`filters.title_contains`で探す。
+3. そのキーワードを含む動画は`get_video_ranking`の`filters.keywords`で探す。タイトルだけでなくタグとチャンネル名も対象になる。入力スキーマに`keywords`が無いサーバーでは`filters.title_contains`を使う。タグを確かめるときは`fields`に`tags`を含める。
 4. 自分や特定のチャンネルのキーワードは`get_channel_detail`の`keywords`で読む。
 
 ### BANリスクとBAN・改名のレポート
