@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2 — 2026-11-10
+
+- Write the plugin README in English only and link to the Japanese guide.
+
 ## 0.9.1 — 2026-11-10
 
 - Rewrite the plugin description and README around what you can ask, and link the homepage and documentation to the English pages.
