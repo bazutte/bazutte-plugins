@@ -2,7 +2,7 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
-[Bazutte](https://bazutte.com)のデータで、AIからYouTubeの動画とチャンネルを調べるプラグインです。Claude・Claude Code・CodexをBazutteのMCPサーバー（`https://bazutte.com/mcp`）へつなぎ、調査用のskillを加えます。
+AIに聞くだけで、日本のYouTube市場がわかるプラグインです。[Bazutte](https://bazutte.com)が毎日更新している日本のYouTubeのデータをもとに、実際の再生数と登録者数で答えます。Claude・Claude Code・CodexをBazutteのMCPサーバー（`https://bazutte.com/mcp`）へつなぎ、調査用のskillを加えます。
 
 ## 導入
 

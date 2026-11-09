@@ -2,7 +2,7 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
-Research YouTube videos and channels with [Bazutte](https://bazutte.com)'s data from your AI. This plugin connects Claude, Claude Code, and Codex to the Bazutte MCP server (`https://bazutte.com/mcp`) and adds a research skill.
+Research the Japanese YouTube market just by asking your AI. Answers use real view and subscriber counts from [Bazutte](https://bazutte.com)'s Japanese YouTube data, updated every day. This plugin connects Claude, Claude Code, and Codex to the Bazutte MCP server (`https://bazutte.com/mcp`) and adds a research skill.
 
 ## Set up
 

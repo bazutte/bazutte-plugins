@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.1 — 2026-11-10
+
+- Rewrite the plugin description and README around what you can ask, and link the homepage and documentation to the English pages.
+
 ## 0.9.0 — 2026-11-07
 
 - Include an Apache License 2.0 `LICENSE` and add `license` and search `keywords` to both plugin manifests.

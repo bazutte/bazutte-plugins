@@ -7,7 +7,7 @@
     {
       "name": "bazutte",
       "source": "./plugins/bazutte",
-      "description": "Research YouTube videos and channels using Bazutte's stored data / Bazutteの保存データでYouTubeの動画・チャンネルを調査",
+      "description": "Research the Japanese YouTube market just by asking Claude / Claudeに聞くだけで、日本のYouTube市場がわかる",
       "homepage": "https://github.com/bazutte/bazutte-plugins"
     }
   ],
