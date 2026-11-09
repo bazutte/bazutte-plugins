@@ -7,9 +7,9 @@
     {
       "name": "bazutte",
       "source": "./plugins/bazutte",
-      "description": "Bazutteの保存データでYouTubeの動画・チャンネルを調査 / Research YouTube videos and channels using Bazutte's stored data",
+      "description": "Research YouTube videos and channels using Bazutte's stored data / Bazutteの保存データでYouTubeの動画・チャンネルを調査",
       "homepage": "https://github.com/bazutte/bazutte-plugins"
     }
   ],
-  "description": "Claude Code・Codex向けBazutte MCPプラグイン / Bazutte MCP plugins for Claude Code and Codex"
+  "description": "Bazutte MCP plugins for Claude Code and Codex / Claude Code・Codex向けBazutte MCPプラグイン"
 }

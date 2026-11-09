@@ -1,10 +1,17 @@
 {
   "name": "bazutte",
-  "version": "0.8.6",
-  "description": "Bazutteの保存データでYouTubeの動画・チャンネルを調査 / Research YouTube videos and channels using Bazutte's stored data",
+  "version": "0.9.0",
+  "description": "Research YouTube videos and channels using Bazutte's stored data / Bazutteの保存データでYouTubeの動画・チャンネルを調査",
   "author": {
     "name": "Bazutte"
   },
   "homepage": "https://bazutte.com",
-  "repository": "https://github.com/bazutte/bazutte-plugins"
+  "repository": "https://github.com/bazutte/bazutte-plugins",
+  "license": "Apache-2.0",
+  "keywords": ["youtube", "analytics", "research"],
+  "icon": "./assets/logo.png",
+  "documentationUrl": "https://info.bazutte.com/mcp",
+  "supportUrl": "https://forms.gle/L9ZQ757jkqdDA4dJ8",
+  "privacyPolicyUrl": "https://info.bazutte.com/en/privacy",
+  "termsOfServiceUrl": "https://info.bazutte.com/en/terms"
 }
