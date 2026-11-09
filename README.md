@@ -2,166 +2,62 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
-Research YouTube videos and channels using [Bazutte](https://bazutte.com)'s stored data from Claude, Claude Code, and Codex. This plugin is provided by Bazutte and bundles the MCP connection with a research skill for video discovery, competitor comparisons, and channel analysis.
+Research YouTube videos and channels with [Bazutte](https://bazutte.com)'s data from your AI. This plugin connects Claude, Claude Code, and Codex to the Bazutte MCP server (`https://bazutte.com/mcp`) and adds a research skill.
 
-Data sources include YouTube API Services. The MCP returns stored information and Bazutte's own metrics in Bazutte's format. This is not an official YouTube plugin or a general-purpose client for calling the YouTube Data API directly. YouTube is a trademark of Google LLC.
+## Set up
 
-## Requirements
+Send this one line to an AI that can add MCP servers by itself (Codex, Claude Code, and others):
 
-- A paid Claude plan (Pro, Max, Team, or Enterprise), or Claude Code or Codex CLI.
-- Git if installing through a CLI.
-- A Bazutte account with permission to use the MCP service.
-- Network access to GitHub and `https://bazutte.com/mcp`.
+```text
+Read https://info.bazutte.com/mcp and set up Bazutte
+```
 
-The plugin connects to Bazutte's production MCP endpoint. Installing or enabling it may initiate a connection or an authentication prompt.
+Then sign in to Bazutte in the browser window that opens.
 
-## Quick start
+**Claude** (paid plan): In **Customize → Plugins**, choose **Add marketplace**, enter `https://github.com/bazutte/bazutte-plugins`, and add **Bazutte**. Then open **Connectors** and choose **Connect**. On Team and Enterprise, an owner adds the connector first.
 
-The Bazutte plugin is not yet listed in any AI's official directory. Add the GitHub repository `bazutte/bazutte-plugins` as a marketplace, then install Bazutte from it.
+**ChatGPT**: Add a custom MCP server with the URL `https://bazutte.com/mcp` and OAuth.
 
-### Claude (web and regular app)
+Step-by-step guides for each AI: [info.bazutte.com/en/mcp](https://info.bazutte.com/en/mcp).
 
-1. Open [Claude's Plugins page](https://claude.ai/customize/plugins) and select **Add → Add marketplace**.
-2. Enter `https://github.com/bazutte/bazutte-plugins` to add the marketplace, then add the **Bazutte** plugin it lists.
-3. Open the plugin's **Connectors** tab. If Bazutte is not added yet, select **Add**, then **Connect**. Sign in to Bazutte and grant access.
-
-No CLI installation or manual MCP URL entry is needed. The plugin also syncs to the Claude apps and Claude Code signed in to the same account. For Team and Enterprise, an owner must add the Bazutte connector first. For a Free plan or an account without the plugin menu, select Claude on [Bazutte's AI integration page](https://bazutte.com/ai_integration) and open the manual setup details.
-
-For Codex or Claude Code, install the AI's CLI on the same computer first. Run the commands below in a terminal, then sign in to Bazutte in the browser that the last command opens. The app and CLI use the same setup.
-
-### Codex (app, CLI, and IDE extension)
+<details>
+<summary>Install with commands</summary>
 
 ```bash
+# Codex
 codex plugin marketplace add bazutte/bazutte-plugins
 codex plugin add bazutte@bazutte-plugins
 codex mcp login bazutte
-```
 
-The third command starts Bazutte OAuth authentication. Complete sign-in and consent, then reopen your Codex app, CLI, or IDE extension and start a new conversation. The server is named `bazutte`.
-
-### Claude Code (app and CLI)
-
-```bash
-claude plugin install bazutte --marketplace bazutte/bazutte-plugins
+# Claude Code
+claude plugin marketplace add bazutte/bazutte-plugins
+claude plugin install bazutte@bazutte-plugins
 claude mcp login plugin:bazutte:bazutte
 ```
 
-The first command adds the marketplace and installs the plugin. This form requires Claude Code `2.1.292` or later. If it fails, update Claude Code with `claude update`, or replace the first command with these two commands:
+To update, run `codex plugin marketplace upgrade bazutte-plugins`, or `claude plugin marketplace update bazutte-plugins` and `claude plugin update bazutte@bazutte-plugins`. Then start a new conversation.
 
-```bash
-claude plugin marketplace add bazutte/bazutte-plugins
-claude plugin install bazutte@bazutte-plugins
-```
+</details>
 
-Run `claude mcp login plugin:bazutte:bazutte` in an interactive terminal. Complete sign-in and consent, then reopen Claude Code and start a new conversation. Use a local session in the app. If the login command is unavailable, open `/mcp` in a conversation and select **Authenticate** for `plugin:bazutte:bazutte`.
-
-ChatGPT cannot add a GitHub marketplace from its interface, so register the MCP URL instead. Follow the instructions on [Bazutte's AI integration page](https://bazutte.com/ai_integration). To also use the research skill, install the plugin with the Codex steps above.
-
-## Ask in plain language
-
-After connecting, you can ask without knowing tool names:
+## What you can ask
 
 ```text
-Use Bazutte to find the 10 most viewed videos published yesterday, with video and channel links.
+Use Bazutte to find the 10 most viewed videos published yesterday.
+Use Bazutte to compare this channel with its competitors over the last 30 days.
 ```
 
-```text
-Use Bazutte to find growing videos from channels with no more than 3,000 subscribers.
-```
+You can research video rankings, growing videos, competitor and similar channels, recent uploads, keyword trends, channel name changes, and ban history. All tools are read-only.
 
-```text
-Use Bazutte to compare this YouTube channel with its competitors by views gained and posts published in the last 30 days.
-```
+## Authentication and data
 
-```text
-Use Bazutte to find the 100 most viewed videos published yesterday from channels with no more than 3,000 subscribers. Show thumbnails, spreading rate, and hit score, and save every returned field in a report.
-```
+Each user signs in to Bazutte with OAuth. The package contains no API keys or account data. Tool arguments (such as keywords and channel URLs) are sent to Bazutte, and results are passed to your AI client. See the [Privacy Policy](https://info.bazutte.com/en/privacy) and [Terms of Service](https://info.bazutte.com/en/terms).
 
-The bundled `bazutte-research` skill selects data and comparison metrics that match your question, then presents results with source attribution and YouTube video and channel links. If you ask for content ideas, it separates observed patterns from hypotheses. Data update times and retrieval times are distinguished; real-time values are not guaranteed.
+Data sources include YouTube API Services, so the [YouTube Terms of Service](https://www.youtube.com/t/terms) and [Google Privacy Policy](https://policies.google.com/privacy) also apply. This is not an official YouTube plugin. YouTube is a trademark of Google LLC.
 
-Ask in plain language. You can also invoke `/bazutte:bazutte-research` in Claude Code or `$bazutte-research` in Codex.
+## Support
 
-## Available research and reports
-
-You can research video rankings, channel comparisons and details, similar and competing channels, recent uploads and a channel's uploads that outperformed its usual results, view and subscriber changes over the last 30 days, keyword rankings, channel name changes, stored ban and reinstatement history, a channel's ban risk, and weekly, monthly, or quarterly ban and rename reports. Identify channels by ID, `@handle`, channel URL, or current or former name, and compare up to 100 at once. Identify videos by ID or video URL. Ask "What can Bazutte do?" for examples based on the connected tools' descriptions. Date ranges, limits, and permissions vary by tool.
-
-When you ask to save every field, the skill avoids selecting a subset of columns and preserves the returned rows, fields, conditions, and warnings. It retrieves and saves the server's HTML report when supported, or builds a report from the retrieved data otherwise. Unless you specify a location, reports are saved under `bazutte-reports/` in the working directory. Full-field retrieval proceeds in pages of 50 or fewer, and when the AI client offloads a large result to a file, the report is saved from that file. Server reports are temporary; resource reading and file saving also depend on your AI client. "Every field" refers to the retrieved data, not every record stored in Bazutte.
-
-Returned thumbnails use external image URLs and retain links to the original videos. Image links are provided when images cannot be displayed. Spreading rate, buzz score, and hit score are Bazutte's own multiplier metrics, not official YouTube metrics or ratings. A hit score of `1.0` can also be a fallback when the score cannot be calculated.
-
-Reports are snapshots of retrieved information. Saving, embedding offline images, and redistributing data are subject to applicable terms and refresh or deletion requirements. Saving a report does not grant indefinite retention or redistribution rights. A server report's expiry is the deadline for accessing that temporary resource, not a data license expiry.
-
-## Authentication and privacy
-
-Each user signs in to Bazutte and grants access through OAuth. No shared API key, access token, personal information, or account data is included in the package. Publishing the connection definition does not grant access to Bazutte data.
-
-Before use, review and agree to the [Bazutte Terms of Service](https://info.bazutte.com/terms) and [Privacy Policy](https://info.bazutte.com/privacy). The [YouTube Terms of Service](https://www.youtube.com/t/terms) also apply, and users must agree to them. See the [Google Privacy Policy](https://policies.google.com/privacy) for Google's data practices.
-
-Tool arguments, including search conditions and identifiers, are sent to Bazutte. Results, including video and channel information, metrics, and reports, are passed to the AI client you use. Check that service's settings, terms, and privacy policy for its storage, sharing, and model-improvement practices. Authorizing a Bazutte connection does not authorize operations on your YouTube account or access to private YouTube analytics.
-
-To disconnect, remove or disconnect Bazutte in your AI client's MCP or Connectors settings. Disconnecting does not necessarily delete conversations or saved reports held by the AI service. Follow that service's deletion procedures for its history and saved files. For Bazutte data inquiries or deletion requests, use the contact listed in its Privacy Policy.
-
-The package contains manifests, connection settings, skills written in natural language, icon images, and the license text. It has no installation scripts or lifecycle hooks. Adding it from Claude's Plugins page does not require Git on your computer.
-
-## Compatibility
-
-| Client | Plugin manifest | MCP definition | Authentication |
-| --- | --- | --- | --- |
-| Claude (paid plan) | `plugins/bazutte/.claude-plugin/plugin.json` | `.mcp.json` (`http`) | Bazutte OAuth from the plugin's Connectors tab |
-| Codex CLI | `plugins/bazutte/plugin.json` | `mcp.json` (`streamable-http`) | Bazutte OAuth |
-| Claude Code | `plugins/bazutte/.claude-plugin/plugin.json` | `.mcp.json` (`http`) | Bazutte OAuth |
-
-The install commands were checked with Codex CLI `0.162.0` and Claude Code `2.1.295`. These are tested versions, not minimum-version guarantees. The Claude UI instructions follow the official documentation; a live account connection has not been tested.
-
-## Troubleshooting
-
-| Symptom | What to check |
-| --- | --- |
-| The Git source cannot be fetched | Confirm GitHub is reachable and the repository has the `main` branch and the marketplace catalog. CLI installation also requires Git. |
-| The plugin is not listed or enabled | Confirm the marketplace is named `bazutte-plugins` and the plugin ID is `bazutte@bazutte-plugins`. Check the client's installed plugins, then open a new session. |
-| Authentication fails or the tool is unavailable | Check the bundled server's authentication state and your Bazutte account's permissions in the client's MCP settings. |
-| An older manual setup duplicates the connection | Check it with `codex mcp get bazutte` or `claude mcp get bazutte`. If you no longer need that manual configuration, remove it with `codex mcp remove bazutte` or `claude mcp remove --scope user bazutte`, then install the plugin. |
-| Weekly usage is exhausted | Ask for your remaining Bazutte usage and check the returned reset time. |
-
-Contact [Bazutte through its public website](https://bazutte.com). Include the client version and a sanitized error message.
-
-## Package structure
-
-```text
-.agents/plugins/marketplace.json         # Codex catalog / Codex用カタログ
-.claude-plugin/marketplace.json          # Claude Code catalog / Claude Code用カタログ
-plugins/bazutte/
-  plugin.json                           # Portable manifest / 共通形式の定義
-  mcp.json                              # Codex MCP settings / Codex用MCP設定
-  .claude-plugin/plugin.json             # Claude Code manifest / Claude Code用の定義
-  .mcp.json                             # Claude Code MCP settings / Claude Code用MCP設定
-  skills/bazutte-research/SKILL.md        # Bazutte research / 動画・チャンネル調査
-  assets/logo.png, logo-dark.png         # Logo for light and dark themes / ライト・ダーク用ロゴ
-  assets/icon.png, icon-dark.png         # Icon for light and dark themes / ライト・ダーク用アイコン
-LICENSE                                  # Apache License 2.0 / ライセンス文
-```
-
-Both catalogs expose `bazutte@bazutte-plugins`. Client-specific MCP settings point to the same production endpoint.
-
-## Updates
-
-Use your client's marketplace and plugin update controls to fetch a new release. For marketplaces added from Claude's Plugins page, select **Check for updates**. GitHub marketplaces also support **Sync automatically**. Automatic updates for custom Claude Code marketplaces are off by default; users can enable them in the marketplace settings.
-
-For Claude Code, run `claude plugin marketplace update bazutte-plugins`, followed by `claude plugin update bazutte@bazutte-plugins`. For Codex, run `codex plugin marketplace upgrade bazutte-plugins`. Start a new conversation after updating.
-
-## Release status
-
-Version `0.9.0` includes an Apache License 2.0 `LICENSE` and icons for light and dark themes, and adds `license` and search `keywords` to both plugin manifests. English is now the default: this `README.md` is English and the Japanese guide is `README.ja.md`. The research skill and connection settings are unchanged. Version `0.8.6` searches videos by keyword or genre across titles, tags, and channel names when the server's video ranking accepts `filters.keywords`, and adds filtering by duration and reading tags to the research skill. Version `0.8.5` adds a research-skill step that reads long-running uploads (published more than 30 days ago and still gaining views in the last 7 days, up to 10 per type) from the `long_term_posts` section of channel details, when the connected server supports it. Version `0.8.4` follows the server, which now takes only `history.days` and returns daily rows under 180 days and monthly rows from 180 days. Version `0.8.3` adds a research-skill step that reads subscriber, total-view, and upload-count trends (up to 730 days) from the `history` section of channel details, when the connected server supports it. Version `0.8.2` updates the research skill's call limits to the server's current values (60 per minute for every tool) and adds that trends and video descriptions are not returned over MCP but are viewable on the web. Version `0.8.1` adds a research-skill step that converts date and time arguments to `YYYY-MM-DD` (Japan time) or `YYYY-MM-DDTHH:MM:SS+09:00` before sending. Version `0.8.0` removes research-skill steps that relied on video metric history, performance trends after publication, and daily channel-detail statistics, which the server no longer returns, and reflects that the upload list returns only recent uploads (roughly the latest 100 per type). Version `0.7.0` passes `@handle`s and channel URLs directly as `channel_id` and ranking `channel_ids` when the connected server accepts them, without looking up IDs first. It also adds research-skill steps for daily differences in video history, retrying period errors with `suggested_request`, and reading `engagement_rate` and `views_per_day`. Upload period limits and performance-trend ages follow the connected server's tool descriptions. Version `0.6.0` adds research-skill steps to identify channels by passing `@handle`s or channel URLs directly, find competitors from similar channels, compare upload performance by views at fixed days after publication, and find a channel's outlier uploads. It also covers channel-detail section selection, fetching truncated sections, and using the fixes suggested in error responses. These steps are available when the connected server supports them. Version `0.5.0` adds research-skill steps to go from a channel URL, ID, or former name to details, uploads, and video history, to compare competitors using related channels, to research from keywords, and to read ban risk and ban and rename reports. When no period is given for uploads, the skill uses the last 30 days without waiting for confirmation. Version `0.4.2` removes research-skill guidance for the connection-check `ping` tool, which the server no longer provides. Version `0.4.1` adds guidance to the research skill for narrowing arguments after a response-too-large error, a default report location, and saving reports when the AI client offloads a large result to a file. Version `0.4.0` renamed the research skill from `youtube-research` to `bazutte-research` and clarified the provider, data sources, custom metrics, terms, and data sharing with AI clients. Update any invocations that use the old name. Guidance for preserving every returned field, thumbnails, spreading rate, and hit score remains available. Once it reaches the distribution repository's `main` branch, use the update commands above to get it. The server and plugin are updated separately; server-generated reports are used only when the connected server supports them.
-
-See [CHANGELOG.md](CHANGELOG.md) for release notes. The distribution repository provides user-facing files on `main` and version tags.
+[Contact form](https://forms.gle/L9ZQ757jkqdDA4dJ8) · [Release notes](CHANGELOG.md)
 
 ## License
 
-The files in this repository (plugin manifests, connection settings, skills, icons, and documentation) are provided under the [Apache License 2.0](LICENSE). Under Section 6 of that license, it grants no rights to use the Bazutte name or logo as trademarks. Use of the Bazutte service is governed by the [Bazutte Terms of Service](https://info.bazutte.com/terms), not by this license.
-
-## References
-
-- [Codex plugin packaging and distribution](https://developers.openai.com/plugins/build/plugins)
-- [Claude plugin installation](https://claude.com/docs/plugins/overview)
-- [Claude Code plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces)
-- [Claude Code marketplace hosting and updates](https://code.claude.com/docs/en/plugins/host-marketplace)
+[Apache License 2.0](LICENSE). It grants no rights to the Bazutte name or logo. Use of the Bazutte service is governed by the [Terms of Service](https://info.bazutte.com/en/terms).
