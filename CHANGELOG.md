@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.5 — 2026-11-13
+
+- Request related channels from `get_channel_detail` only by naming `related_channels` in `sections`, and use `get_similar_channels` to find similar channels.
+
 ## 0.9.4 — 2026-11-12
 
 - Rank and compare videos by plain metrics (views, views in the last 7 days, likes, comments). Use Bazutte-only scores (hit score, spreading rate, buzz score) only when the user names them, and state their definition.
