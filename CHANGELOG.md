@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.4 — 2026-11-12
+
+- Rank and compare videos by plain metrics (views, views in the last 7 days, likes, comments). Use Bazutte-only scores (hit score, spreading rate, buzz score) only when the user names them, and state their definition.
+- Explain that bans and channel renames arrive once a day in the Japan afternoon, that undated lists stop at the latest complete day, and that weekly and monthly counts come from `get_channel_change_report`.
+
+## 0.9.3 — 2026-11-12
+
+- Correct the research skill: `three_days_view_count` holds views from the last 7 days, and channel history returns 24 months plus daily rows (30 days by default, up to 365).
+- Use the charts and "Save image" in each tool's screen when the client shows MCP Apps, instead of redrawing them.
+- Continue from `pagination.next_page` when the server returns fewer rows to keep a response under about 140,000 characters.
+- Remove noisy ranking rows: unrelated partial keyword matches, company channels under `creator`, and `hit_score` outliers.
+
 ## 0.9.2 — 2026-11-10
 
 - Write the plugin README in English only and link to the Japanese guide.

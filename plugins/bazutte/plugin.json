@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "bazutte",
-  "version": "0.9.2",
+  "version": "0.9.4",
   "description": "Research the Japanese YouTube market just by asking your AI / AIに聞くだけで、日本のYouTube市場がわかる",
   "author": {
     "name": "Bazutte"
