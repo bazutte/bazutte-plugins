@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.6 — 2026-11-14
+
+- Read a channel's posts from every period with `get_channel_videos`, and fetch specific posts by `filters.video_ids`.
+- Take the response size limit from each tool's description instead of assuming about 140,000 characters.
+- Explain the BAN risk factors and its `unavailable` and `not_published` states.
+- Filter videos by topic with `filters.keywords`, filter channels by country with `filters.country_equals`, and stop sending `keyword`, `filters.keyword`, `filters.search`, or `filters.country`, which the server rejects.
+
 ## 0.9.5 — 2026-11-13
 
 - Request related channels from `get_channel_detail` only by naming `related_channels` in `sections`, and use `get_similar_channels` to find similar channels.

@@ -17,12 +17,12 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 
 | 目的 | 調べ方と比較の観点 |
 | --- | --- |
-| 伸びている動画を探す | `get_video_ranking`で候補を取得する。再生数の多さと最近の伸びを区別し、再生数・直近7日の再生数（`three_days_view_count`）・高評価数・コメント数のように名前で意味が伝わる指標で並べる。条件に使った登録者数や比較指標も結果に含める。ジャンルや話題で絞るときは、入力スキーマに`filters.keywords`があれば語を並べて渡す（各語をタイトル・タグ・チャンネル名のどれかに含む動画を全語ANDで返す）。尺は`min_duration_seconds`・`max_duration_seconds`（秒）で絞る。 |
+| 伸びている動画を探す | `get_video_ranking`で候補を取得する。再生数の多さと最近の伸びを区別し、再生数・直近7日の再生数（`three_days_view_count`）・高評価数・コメント数のように名前で意味が伝わる指標で並べる。条件に使った登録者数や比較指標も結果に含める。ジャンルや話題で絞るときは、入力スキーマに`filters.keywords`があれば語を並べて渡す（各語をタイトル・タグ・チャンネル名のどれかに含む動画を全語ANDで返す）。トップレベルの`keyword`、`filters.keyword`・`filters.search`は無く、送ると断られる。尺は`min_duration_seconds`・`max_duration_seconds`（秒）で絞る。 |
 | 特定のチャンネルを深掘りする | 下の「チャンネルを特定して深掘りする」の順で進める。 |
 | 競合を比較する | 下の「競合・類似チャンネルを比較する」の順で進める。一覧で答えられる比較では各チャンネルの詳細を追加取得しない。 |
-| チャンネルの直近の投稿を調べる | `get_channel_videos`で読む。対象は直近に更新された投稿（種別ごとにおおむね最新100本）だけで、それより古い投稿は返らない。直近の再生の伸びは`seven_days_view_count`（直近7日間の再生数）で比べる。`get_video_ranking`の`three_days_view_count`は列名に反して直近7日間の再生数で、公開から3日間の再生数ではない。`get_channel_videos`には`three_days_view_count`が無い。 |
+| チャンネルの直近の投稿を調べる | `get_channel_videos`で読む。動画・ショート・ライブとも全期間の投稿が対象で、特定の投稿は`filters.video_ids`（11文字の動画ID、最大100件）で取れる。語で絞るときは`filters.keywords_contains`を使う。直近の再生の伸びは`seven_days_view_count`（直近7日間の再生数）で比べる。`get_video_ranking`の`three_days_view_count`は列名に反して直近7日間の再生数で、公開から3日間の再生数ではない。`get_channel_videos`には`three_days_view_count`が無い。 |
 | チャンネルの登録者数・再生数の推移を求められた | `get_channel_detail`の入力に`history`があるサーバーでは、`sections: ["history"]`で読む。Web画面の「推移」の表と同じ値で、`monthly`（直近24か月、古い月から順）と`daily`（新しい日から順）の両方が返る。日別の日数は`history.days`で指定する（既定30日、最大365日。月別は常に24か月）。`monthly`は月内の最終記録日の値と月内の増減の合計、`daily`は前日の記録からの増減。記録の無い日・月は返らず、`null`は値を取得できていないことを示す。差を求めるときは使った2点の日付を添える。`history`が無いサーバーでは、推移はWeb画面（`bazutte_url`）で見られると伝え、`channel.metrics`（直近30日の増分）で答えられる範囲を示す。推移を返すツール名を推測して呼ばない。 |
-| 公開から時間が経っても伸び続けている投稿（長期再生）を求められた | `get_channel_detail`の`sections`に`long_term_posts`があるサーバーでは、`sections: ["long_term_posts"]`で読む。公開が30日より前の投稿のうち直近7日間に再生が増えたものを、種別（`kind`が`video`・`short`・`live`）ごとに`seven_days_view_count`（直近7日間の再生増）の多い順で最大10本ずつ返す。Web画面のチャンネル詳細「長期再生」タブと同じ内容で、集計時点は`refreshed_at`。`items`が空で`refreshed_at`が`null`なら、そのチャンネルに該当する投稿が無い。`get_channel_videos`は直近に更新された投稿しか返さないので、古い投稿の伸びはこちらで読む。`long_term_posts`が無いサーバーでは、長期再生はWeb画面で見られると伝え、`get_channel_videos`の`seven_days_view_count`で答えられる範囲を示す。 |
+| 公開から時間が経っても伸び続けている投稿（長期再生）を求められた | `get_channel_detail`の`sections`に`long_term_posts`があるサーバーでは、`sections: ["long_term_posts"]`で読む。公開が30日より前の投稿のうち直近7日間に再生が増えたものを、種別（`kind`が`video`・`short`・`live`）ごとに`seven_days_view_count`（直近7日間の再生増）の多い順で最大10本ずつ返す。Web画面のチャンネル詳細「長期再生」タブと同じ内容で、集計時点は`refreshed_at`。`items`が空で`refreshed_at`が`null`なら、そのチャンネルに該当する投稿が無い。公開から時間が経った投稿の伸びを種別ごとにまとめて見るときはこちらを読む。`long_term_posts`が無いサーバーでは、長期再生はWeb画面で見られると伝え、`get_channel_videos`の`seven_days_view_count`で答えられる範囲を示す。 |
 | 動画の指標履歴や説明文を求められた | Bazutte MCPは動画ごとの指標履歴、公開後の日数別の伸び方、動画の説明文を返さない。推測したツール名や引数で呼ばず、`get_video_ranking`の期間別の増分で答えられる範囲を示す。 |
 | キーワードの傾向を調べる | 下の「キーワードから調べる」の順で進める。YouTube全体の検索量と同一視しない。 |
 | チャンネル名の変更を調べる | 個別の履歴は`get_channel_title_changes`、週・月の件数と変更の種類は`get_channel_change_report`の`kind: renamed`。別チャンネルとの取り違えを避けるためIDも残す。 |
@@ -47,7 +47,7 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 
 1. チャンネルを特定する。利用者が示した`UC…`のID・`@handle`・チャンネルURLは、変換せずに`get_channels`の`filters.channel_ids`へ渡す（混在可、最大100件）。`not_found_ids`に返ったものは保存データに見つからなかったと伝える。ハンドルの一部しか分からなければ`filters.handle`と`handle_match: fuzzy`で探す。名前しか分からなければ`filters.title_contains`で探し、同名の切り抜きなどと取り違えていないか登録者数やハンドルで確かめる。現在名で見つからなければ`get_channel_title_changes`の`filters.old_title_contains`で旧名から探す。候補が複数残って絞れないときだけ選んでもらう。以降のツールの`channel_id`の渡し方は「条件を決めて取得する」に従う。
 2. `get_channel_detail`で概要、指標（直近30日の再生数・登録者数の増分と種別ごとの投稿数は`channel.metrics`）、キーワード、名前変更・BAN履歴、`ban_risk`を読む。サーバーが対応していれば、推移（`history`）と長期再生（`long_term_posts`）も同じ呼び出しの`sections`で選べる。一部だけ要るときは`sections`で選ぶ。関連チャンネルは関連度の計算が重く、`sections`を省いた既定では返らないことがあるため、要るときだけ`sections`に`related_channels`を明示する。
-3. 投稿の一覧が要るときは`get_channel_videos`を使う。期間を省略すると、保持している直近の投稿をすべて対象にする。`warnings`が示すとおり古い投稿は含まれないため、それより前の投稿が無いとは言わない。
+3. 投稿の一覧が要るときは`get_channel_videos`を使う。期間を省略すると全期間の投稿を対象にする。
 4. よく見られた投稿は`get_channel_videos`を`order.field: view_count`、最近伸びている投稿は`seven_days_view_count`の降順で取得する。普段より伸びた投稿（`hit_score`）は、利用者が求めたときだけ定義を添えて使う。
 
 ### 競合・類似チャンネルを比較する
@@ -60,13 +60,13 @@ description: BazutteのMCPでYouTubeの伸びている動画を探し、競合�
 ### キーワードから調べる
 
 1. `get_keyword_ranking`で急上昇（`usage_surge`）や定番（`most_used`）のキーワードを読む。対象は各カテゴリの上位100件だけで、`filters.keyword_contains`もその範囲の検索になる。0件なら「上位100件に該当がない」と伝え、YouTube全体に存在しないとは言わない。
-2. そのキーワードを使うチャンネルは`get_channels`の`filters.channel_keyword`（動画タグの完全一致）で探す。
+2. そのキーワードを使うチャンネルは`get_channels`の`filters.channel_keyword`（動画タグの完全一致）で探す。`get_channels`に`filters.keyword`・`filters.country`は無い。国で絞るときは`filters.country_equals`（YouTubeの国コード。例: `JP`）を使う。
 3. そのキーワードを含む動画は`get_video_ranking`の`filters.keywords`で探す。タイトルだけでなくタグとチャンネル名も対象になる。入力スキーマに`keywords`が無いサーバーでは`filters.title_contains`を使う。タグを確かめるときは`fields`に`tags`を含める。
 4. 自分や特定のチャンネルのキーワードは`get_channel_detail`の`keywords`で読む。
 
 ### BANリスクとBAN・改名のレポート
 
-`ban_risk`は、開設からの期間・主体・キーワードが似たチャンネルの直近3か月のBAN率から求めた段階で、違反の判定ではない。`status`が`insufficient_keywords`（キーワード不足）や`unavailable`（未計算・取得失敗）なら判定できなかったと伝え、段階や理由を推測で補わない。
+`ban_risk`は、開設からの期間・直近30日の総動画数の増加・改名・登録者の伸び・キーワードが似たチャンネルの直近3か月のBAN率から求めた段階で、違反の判定ではない。理由は`factors`（`direction`が`up`なら率を上げ、`down`なら下げる特徴）で読む。`status`が`unavailable`（未計算・取得失敗）なら判定できなかったと伝え、`not_published`（BAN済み・非公開）なら段階を出さない。どちらも段階や理由を推測で補わない。
 
 `get_channel_change_report`は`kind`（`banned`または`renamed`）が必須で、`period`は`week`（先週と前の週）・`month`（先月と前の月）・`quarter`（先月までの3か月と前の3か月）を比べる。数はすべてチャンネル数。`words`はキーワードに含まれる言葉ごとの割合と倍率の統計で、BAN・改名の理由ではない。`low_sample`の言葉は率がぶれやすいと添える。`words.status`が`not_ready`なら集計前か取得失敗なので、言葉の傾向は示さずにほかの集計だけを伝える。
 
@@ -80,11 +80,11 @@ BANと名前変更は1日1回、日本時間の昼〜夕方にその日の分が
 
 省略できる条件はツールの既定値を使い、不要な確認を増やさない。上位10件なら10件を取得する。要約の依頼では必要な指標とリンクを選べるが、「全情報」「全項目」の依頼では`fields`を省略する。「昨日」などの相対期間は応答の対象日とタイムゾーンを示し、公開日と集計期間を区別する。`get_video_ranking`の`period`ごとの対象公開期間は`meta.period_window`で確かめる。
 
-次ページは返された`next_page`（一覧系では`pagination.next_page`）を使い、条件・並び順を維持して依頼件数まで取得する。応答が大きすぎると、サーバーはエラーにせず`limit`を半分ずつ下げて先頭の行だけを返し、`warnings`と`pagination.next_page`で続きの取り方を示す（上限は本文と構造化データの合計で約14万字。全項目のチャンネル一覧は十数件、動画・名前変更は数十件で達する）。返った件数が依頼より少なくても0件や取得の終わりとは扱わず、`warnings`が示す`page`・`limit`で続きを取る。多く取るときは、全項目の依頼でなければ`fields`で必要な列だけを選ぶ。`get_video_ranking`の2ページ目以降には、1ページ目の`meta.data_generation`を`data_generation`に渡す。`DATA_REFRESHED`が返ったらランキングが途中で更新されているので、取得済みのページと混ぜず、`data_generation`を外して`page: 1`から取り直す。各ツールの取得上限を超えた場合は、取得範囲を明記する。
+次ページは返された`next_page`（一覧系では`pagination.next_page`）を使い、条件・並び順を維持して依頼件数まで取得する。応答が大きすぎると、サーバーはエラーにせず`limit`を半分ずつ下げて先頭の行だけを返し、`warnings`と`pagination.next_page`で続きの取り方を示す（上限は本文と構造化データの合計で、値はツールの説明に書かれている。サーバーの版で変わるため、件数の目安を決め打ちしない）。返った件数が依頼より少なくても0件や取得の終わりとは扱わず、`warnings`が示す`page`・`limit`で続きを取る。多く取るときは、全項目の依頼でなければ`fields`で必要な列だけを選ぶ。`get_video_ranking`の2ページ目以降には、1ページ目の`meta.data_generation`を`data_generation`に渡す。`DATA_REFRESHED`が返ったらランキングが途中で更新されているので、取得済みのページと混ぜず、`data_generation`を外して`page: 1`から取り直す。各ツールの取得上限を超えた場合は、取得範囲を明記する。
 
 チャンネルの表示名を`channel_id`として送らない。`channel_id`の入力スキーマが`@handle`やチャンネルURLを受け付ける（説明に書かれ、`UC…`だけの`pattern`が無い）場合は、利用者が示した`UC…`のID・`@handle`・URLを変換せずにそのまま渡し、`get_channels`での解決を省く。`UC…`だけの`pattern`がある場合は、`get_channels`の`filters.channel_ids`で解決してから渡す。`CHANNEL_NOT_FOUND`が返ったら、名前や旧名から探す手順（「チャンネルを特定して深掘りする」）に切り替える。
 
-投稿一覧の期間は依頼から読み取る（「先月」「今年」など）。指定がなければ期間を付けずに取得し、確認を待たない。保持範囲より前の期間を求められたら、返った投稿の範囲と`warnings`を添えて伝える。
+投稿一覧の期間は依頼から読み取る（「先月」「今年」など）。指定がなければ期間を付けずに取得し、確認を待たない。
 
 呼び出し回数には1ユーザー単位の上限がある。`get_channel_videos`は毎分60回、`get_keyword_ranking`は毎分60回、`get_channels`・`get_channel_title_changes`・`get_channel_detail`・`get_similar_channels`は4つの合計で毎分60回。多数のチャンネルや動画を調べるときは、`channel_ids`でまとめて取得し、1件ずつの呼び出しを繰り返さない。
 
